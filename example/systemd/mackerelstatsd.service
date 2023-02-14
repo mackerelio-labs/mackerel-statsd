@@ -1,0 +1,11 @@
+[Unit]
+Description=mackerelstatsd
+Documentation=https://mackerel.io/
+After=network.target
+
+[Service]
+EnvironmentFile=-/etc/sysconfig/mackerelstatsd
+ExecStart=/usr/local/bin/mackerelstatsd -host $HOSTID $OTHER_OPTS
+
+[Install]
+WantedBy=multi-user.target
