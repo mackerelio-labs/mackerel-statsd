@@ -2,17 +2,17 @@
 
 ## 概要
 
-**mackerelstatsd**は、StasDプロトコルに則ったメトリクスの合計値、あるいは最小値・最大値・平均を計算して[Mackerel](https://ja.mackerel.io/)に投稿するための、StasDサーバーです。
+**mackerelstatsd**は、StasDプロトコルに則ったメトリックの合計値、あるいは最小値・最大値・平均を計算して[Mackerel](https://ja.mackerel.io/)に投稿するための、StasDサーバーです。
 
-StatsDとはメトリクスを送信するシンプルなUDPプロトコルおよび処理系（[Etsy社のブログ](https://www.etsy.com/codeascraft/measure-anything-measure-everything/)および[オリジナルのStasDのGitHub](https://github.com/statsd/statsd)）で、アプリケーション開発者がメトリクス送信を実装するのは容易です。
+StatsDはメトリックを送信するシンプルなUDPプロトコルおよび処理系（[Etsy社のブログ](https://www.etsy.com/codeascraft/measure-anything-measure-everything/)および[オリジナルのStasDのGitHub](https://github.com/statsd/statsd)）で、アプリケーション開発者がメトリック送信を実装するのは容易です。
 
 ## mackerelstatsdがなぜ必要か
 
-2023年2月時点で、Mackerelは**1分**ごとにメトリクスを受け取ります。つまり、監視している対象の値がその1分の中で激しく変動していたとしても、Mackerelに格納されるメトリクスは取得時点の値だけです。
+2023年2月時点で、Mackerelは**1分**ごとにメトリックを受け取ります。つまり、監視している対象の値がその1分の中で激しく変動していたとしても、Mackerelに格納されるメトリックは取得時点の値だけです。
 
-mackerelstatsdは、この問題を解決する一助となります。アプリケーションからStatsDプロトコルで投稿されるメトリクスをmackerelstatsdが保管し、1分ごとにそれらの合計値、あるいは最小値・最大値・平均値をMackerelに投稿します。これにより、1分よりも短い間に起きた変化を捉えることができます。
+mackerelstatsdは、この問題を解決する一助となります。アプリケーションからStatsDプロトコルで投稿されるメトリックをmackerelstatsdが保管し、1分ごとにそれらの合計値、あるいは最小値・最大値・平均値をMackerelに投稿します。これにより、1分よりも短い間に起きた変化を捉えることができます。
 
-mackerelstatsdは、StatsDプロトコルのうち、Counting（カウンタ値を受け取るり、期間中の値の合計のメトリクスとなる）とTiming（ミリ秒を受け取り、最小値・最大値・平均値のメトリクスとなる）をサポートしています。
+mackerelstatsdは、StatsDプロトコルのうち、Counting（カウンタ値を受け取るり、期間中の値の合計のメトリックとなる）とTiming（ミリ秒を受け取り、最小値・最大値・平均値のメトリックとなる）をサポートしています。
 
 Timingの単位はミリ秒のみですが、Mackerelのグラフ画面上で単位を変更することで代替できます。
 
@@ -33,7 +33,7 @@ MACKEREL_APIKEY=MackerelのAPIキー ./mackerelstatsd -host ホストID
 ```
 
 - `MACKEREL_APIKEY`: MackerelのオーガニゼーションのAPIキーを指定します。書き込み（Write）を有効にしたAPIキーを生成してください。
-- `-host`: メトリクスを紐付けるスタンダードホストのホストIDを指定します。
+- `-host`: メトリックを紐付けるスタンダードホストのホストIDを指定します。
 
 ### サンプル
 
