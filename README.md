@@ -1,81 +1,77 @@
 # mackerelstatsd
 
-## 概要
+## Overview
 
-**mackerelstatsd**は、StasDプロトコルに則ったメトリックの合計値、あるいは最小値・最大値・平均を計算して[Mackerel](https://ja.mackerel.io/)に投稿するための、StasDサーバーです。
+**mackerelstatsd** is a small StatsD server that calculates and posts to [Mackerel](https://mackerel.io/) the sum, or minimum/maximum/average of metrics accepted by the StatsD protocol.
 
-StatsDはメトリックを送信するシンプルなUDPプロトコルおよび処理系（[Etsy社のブログ](https://www.etsy.com/codeascraft/measure-anything-measure-everything/)および[オリジナルのStasDのGitHub](https://github.com/statsd/statsd)）で、アプリケーション開発者がメトリック送信を実装するのは容易です。
+StatsD is a simple UDP protocol and processor for sending metrics (see [Etsy's blog](https://www.etsy.com/codeascraft/measure-anything-measure-everything/) and [original StasD GitHub](https://github.com/statsd/statsd)). It is easy for application developers to implement metric transmission according to StasD.
 
-## mackerelstatsdがなぜ必要か
+## Why mackerelstatsd is needed?
 
-2023年2月時点で、Mackerelは**1分**ごとにメトリックを受け取ります。つまり、監視している対象の値がその1分の中で激しく変動していたとしても、Mackerelに格納されるメトリックは取得時点の値だけです。
+Currently Mackerel receives a metric every **minute**. This means that even if the value of what you are monitoring changes significantly within a minute, the only metric stored in Mackerel is the value at the time it is retrieved.
 
-mackerelstatsdは、この問題を解決する一助となります。アプリケーションからStatsDプロトコルで投稿されるメトリックをmackerelstatsdが保管し、1分ごとにそれらの合計値、あるいは最小値・最大値・平均値をMackerelに投稿します。これにより、1分よりも短い間に起きた変化を捉えることができます。
+mackerelstatsd helps solve this problem. mackerelstatsd stores the metrics that your application posts with the StatsD protocol. Their sum, or minimum/maximum/average values, are posted to Mackerel every minute. This allows you to record information that occurred in less than a minute.
 
-mackerelstatsdは、StatsDプロトコルのうち、Counting（カウンタ値を受け取るり、期間中の値の合計のメトリックとなる）とTiming（ミリ秒を受け取り、最小値・最大値・平均値のメトリックとなる）をサポートしています。
+mackerelstatsd supports the following two of the StatsD protocols:
 
-Timingの単位はミリ秒のみですが、Mackerelのグラフ画面上で単位を変更することで代替できます。
+- Counting: receives a counter value. This will be a metric of the sum of values over a period of time.
+- Timing: receives milliseconds. These will be a metric of the minimum/maximum/average values.
 
-## 使い方
+## Usage
 
-[Goの開発環境](https://go.dev/dl/)を用意し、`mackerel-statsd`フォルダ内でビルドを実行します。
+Prepare [Go's development environment](https://go.dev/dl/) and install mackerelstatsd with the following command:
 
 ```
 go install github.com/mackerelio-labs/mackerel-statsd@latest
 ```
 
-これで、`mackerelstatsd`ファイルが生成されます。
+This will install the `mackerelstatsd` file in `$GOPATH/bin`.
 
-起動は以下の書式です。
-
+To execute, do the following:
 ```
-MACKEREL_APIKEY=MackerelのAPIキー ./mackerelstatsd -host ホストID
+MACKEREL_APIKEY=<Mackerel_API_Key> $GOPATH/bin/mackerelstatsd -host <host_ID>
 ```
 
-- `MACKEREL_APIKEY`: MackerelのオーガニゼーションのAPIキーを指定します。書き込み（Write）を有効にしたAPIキーを生成してください。
-- `-host`: メトリックを紐付けるスタンダードホストのホストIDを指定します。
+- `MACKEREL_APIKEY`: Specify the API key for your Mackerel organization. Please generate a write-enabled API key on Mackerel.
+- `-host`: Specify the host ID (must be a standard host) to which the metric is posted.
 
-### サンプル
+### Example
 
-`example` フォルダにサンプルを置いています。それぞれのフォルダ内で `go run main.go` を実行することで試すことができます。
+There are sample implementations in `example` folder.
 
-- `sample-client` : サイコロを10回振った出目の合計のメトリック（`custom.statsd.sample.dice`）と、はてな社トップページへのリクエストの10回のレイテンシーの平均・最大・最小のメトリック（`custom.statsd.sample.http.hatena.average/max/min`）を投稿します。間を置いて何度か実行してみてください。
-- `sample-http-server` : ローカルホストの8080ポートでWebサーバーが待ち受け、リクエスト処理のレイテンシーの平均・最大・最小のメトリック（`custom.statsd.sample.http.request_.average/max/min`および`custom.statsd.sample.http.request_favicon.ico.average/max/min`）を投稿します。ブラウザで`http://localhost:8080`を開き、何度かリロードしてみてください。
+- `sample-client` : It posts a metric for the total number of rolls of the dice 10 times (`custom.statsd.sample.dice`) and a metric for the average/maximum/minimum latency of 10 requests to Hatena's top page (`custom.statsd.sample.http.hatena.average/max/min`). Try to execute it several times.
+- `sample-http-server` : The web server listens on `localhost:8080` and posts average/maximum/minimum request processing latency metrics (`custom.statsd.sample.http.request_.average/max/min` and `custom.statsd. sample.http.request_favicon.ico.average/max/min`). Open `http://localhost:8080` in your browser and reload it several times.
 
-![sample-http-serverの実行例](images/latency.png)
+![Execution example of sample-http-server](images/latency.png)
 
-### 自動サービス化
+### Making it a startup service
 
-Linuxのsystemd環境向けのサービスファイルを用意しています。
+Service files for Linux systemd are available.
 
-1. 各ファイルをシステムにコピーします。
+1. Copy each fileto the system.
 
    ```
-   sudo cp mackerelstatsd /usr/local/bin
+   sudo cp $GOPATH/bin/mackerelstatsd /usr/local/bin
    sudo cp example/systemd/mackerelstatsd.service /lib/systemd/system
    sudo mkdir -p /etc/sysconfig
    sudo cp example/systemd/mackerelstatsd.sysconfig /etc/sysconfig/mackerelstatsd
    ```
 
-2. `/etc/sysconfig/mackerelstatsd`ファイルを編集し、Mackerel APIキー（`MACKEREL_APIKEY`）とホストID（`HOSTID`）をお使いのものに置き換えてください。
+2. Edit `/etc/sysconfig/mackerelstatsd` file and replace the Mackerel API key (`MACKEREL_APIKEY`) and host ID (`HOSTID`) with your own.
 
    ```
    sudo vi /etc/sysconfig/mackerelstatsd
    ```
 
-3. systemdサービスを有効化します。
+3. Enable systemd service.
 
    ```
    sudo systemctl enable mackerelstatsd
    ```
 
-## Overview
+## License
 
-## Usage
-
-## License / ライセンス
-
-Copyright 2023 KADOTA, Kyohei
+Copyright 2023 Hatena Co, Ltd.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
