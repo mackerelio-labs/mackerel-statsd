@@ -40,7 +40,7 @@ MACKEREL_APIKEY=MackerelのAPIキー ./mackerelstatsd -host ホストID
 `example` フォルダにサンプルを置いています。それぞれのフォルダ内で `go run main.go` を実行することで試すことができます。
 
 - `sample-client` : サイコロを10回振った出目の合計のメトリック（`custom.statsd.sample.dice`）と、はてな社トップページへのリクエストの10回のレイテンシーの平均・最大・最小のメトリック（`custom.statsd.sample.http.hatena.average/max/min`）を投稿します。間を置いて何度か実行してみてください。
-- `sample-http-server` : ローカルホストの8080ポートでWebサーバーが待ち受け、リクエスト処理のレイテンシーの平均・最大・最小のメトリック（`custom.statsd.sample.http.request_.average/max/min`および`custom.statsd.sample.http.request_favicon.ico.average/max/min`）を投稿します。ブラウザでhttp://localhost:8080を開き、何度かリロードしてみてください。
+- `sample-http-server` : ローカルホストの8080ポートでWebサーバーが待ち受け、リクエスト処理のレイテンシーの平均・最大・最小のメトリック（`custom.statsd.sample.http.request_.average/max/min`および`custom.statsd.sample.http.request_favicon.ico.average/max/min`）を投稿します。ブラウザで`http://localhost:8080`を開き、何度かリロードしてみてください。
 
 ![sample-http-serverの実行例](images/latency.png)
 
