@@ -21,7 +21,7 @@ Timingの単位はミリ秒のみですが、Mackerelのグラフ画面上で単
 [Goの開発環境](https://go.dev/dl/)を用意し、`mackerel-statsd`フォルダ内でビルドを実行します。
 
 ```
-go build
+go install github.com/mackerelio-labs/mackerel-statsd@latest
 ```
 
 これで、`mackerelstatsd`ファイルが生成されます。
