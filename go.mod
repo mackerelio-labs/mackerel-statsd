@@ -1,4 +1,4 @@
-module github.com/hatena/mackerelstatsd
+module github.com/mackerelio-labs/mackerel-statsd
 
 go 1.19
 

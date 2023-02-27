@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hatena/mackerelstatsd/parser"
+	"github.com/mackerelio-labs/mackerel-statsd/parser"
 )
 
 func TestServerListenAndServe(t *testing.T) {

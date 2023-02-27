@@ -8,8 +8,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/hatena/mackerelstatsd/example/driver/cactusstatsd"
-	"github.com/hatena/mackerelstatsd/statsd"
+	"github.com/mackerelio-labs/mackerel-statsd/example/driver/cactusstatsd"
+	"github.com/mackerelio-labs/mackerel-statsd/statsd"
 )
 
 func main() {

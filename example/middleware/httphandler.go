@@ -5,8 +5,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hatena/mackerelstatsd/metricname"
-	"github.com/hatena/mackerelstatsd/statsd"
+	"github.com/mackerelio-labs/mackerel-statsd/metricname"
+	"github.com/mackerelio-labs/mackerel-statsd/statsd"
 )
 
 func metricName(path string) string {

@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/hatena/mackerelstatsd/parser"
+	"github.com/mackerelio-labs/mackerel-statsd/parser"
 )
 
 type Server struct {
