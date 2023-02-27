@@ -5,7 +5,7 @@ import (
 
 	"github.com/cactus/go-statsd-client/v5/statsd"
 
-	proto "github.com/hatena/mackerelstatsd/statsd"
+	proto "github.com/mackerelio-labs/mackerel-statsd/statsd"
 )
 
 type Driver struct {

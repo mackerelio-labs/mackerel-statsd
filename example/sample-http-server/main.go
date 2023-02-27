@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/hatena/mackerelstatsd/example/driver/cactusstatsd"
-	"github.com/hatena/mackerelstatsd/example/middleware"
-	"github.com/hatena/mackerelstatsd/statsd"
+	"github.com/mackerelio-labs/mackerel-statsd/example/driver/cactusstatsd"
+	"github.com/mackerelio-labs/mackerel-statsd/example/middleware"
+	"github.com/mackerelio-labs/mackerel-statsd/statsd"
 )
 
 func helloHandler(w http.ResponseWriter, req *http.Request) {

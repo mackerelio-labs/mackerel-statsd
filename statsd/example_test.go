@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	"github.com/hatena/mackerelstatsd/parser"
-	"github.com/hatena/mackerelstatsd/statsd"
+	"github.com/mackerelio-labs/mackerel-statsd/parser"
+	"github.com/mackerelio-labs/mackerel-statsd/statsd"
 )
 
 func Example_server() {

@@ -14,9 +14,9 @@ import (
 
 	"github.com/mackerelio/mackerel-client-go"
 
-	"github.com/hatena/mackerelstatsd/metricname"
-	"github.com/hatena/mackerelstatsd/parser"
-	"github.com/hatena/mackerelstatsd/statsd"
+	"github.com/mackerelio-labs/mackerel-statsd/metricname"
+	"github.com/mackerelio-labs/mackerel-statsd/parser"
+	"github.com/mackerelio-labs/mackerel-statsd/statsd"
 )
 
 // Sink is a destination to collect- and to flush-metrics.
