@@ -1,35 +1,35 @@
-# mackerelstatsd
+# mackerel-statsd
 
 ## Overview
 
-**mackerelstatsd** is a small StatsD server that calculates and posts to [Mackerel](https://mackerel.io/) the sum, or minimum/maximum/average of metrics accepted by the StatsD protocol.
+**mackerel-statsd** is a small StatsD server that calculates and posts to [Mackerel](https://mackerel.io/) the sum, or minimum/maximum/average of metrics accepted by the StatsD protocol.
 
 StatsD is a simple UDP protocol and processor for sending metrics (see [Etsy's blog](https://www.etsy.com/codeascraft/measure-anything-measure-everything/) and [original StasD GitHub](https://github.com/statsd/statsd)). It is easy for application developers to implement metric transmission according to StasD.
 
-## Why mackerelstatsd is needed?
+## Why mackerel-statsd is needed?
 
 Currently Mackerel receives a metric every **minute**. This means that even if the value of what you are monitoring changes significantly within a minute, the only metric stored in Mackerel is the value at the time it is retrieved.
 
-mackerelstatsd helps solve this problem. mackerelstatsd stores the metrics that your application posts with the StatsD protocol. Their sum, or minimum/maximum/average values, are posted to Mackerel every minute. This allows you to record information that occurred in less than a minute.
+mackerel-statsd helps solve this problem. mackerel-statsd stores the metrics that your application posts with the StatsD protocol. Their sum, or minimum/maximum/average values, are posted to Mackerel every minute. This allows you to record information that occurred in less than a minute.
 
-mackerelstatsd supports the following two of the StatsD protocols:
+mackerel-statsd supports the following two of the StatsD protocols:
 
 - Counting: receives a counter value. This will be a metric of the sum of values over a period of time.
 - Timing: receives milliseconds. These will be a metric of the minimum/maximum/average values.
 
 ## Usage
 
-Prepare [Go's development environment](https://go.dev/dl/) and install mackerelstatsd with the following command:
+Prepare [Go's development environment](https://go.dev/dl/) and install mackerel-statsd with the following command:
 
 ```
 go install github.com/mackerelio-labs/mackerel-statsd@latest
 ```
 
-This will install the `mackerelstatsd` file in `$GOPATH/bin`.
+This will install the `mackerel-statsd` file in `$GOPATH/bin`.
 
 To execute, do the following:
 ```
-MACKEREL_APIKEY=<Mackerel_API_Key> $GOPATH/bin/mackerelstatsd -host <host_ID>
+MACKEREL_APIKEY=<Mackerel_API_Key> $GOPATH/bin/mackerel-statsd -host <host_ID>
 ```
 
 - `MACKEREL_APIKEY`: Specify the API key for your Mackerel organization. Please generate a write-enabled API key on Mackerel.
@@ -51,22 +51,22 @@ Service files for Linux systemd are available.
 1. Copy each fileto the system.
 
    ```
-   sudo cp $GOPATH/bin/mackerelstatsd /usr/local/bin
-   sudo cp example/systemd/mackerelstatsd.service /lib/systemd/system
+   sudo cp $GOPATH/bin/mackerel-statsd /usr/local/bin
+   sudo cp example/systemd/mackerel-statsd.service /lib/systemd/system
    sudo mkdir -p /etc/sysconfig
-   sudo cp example/systemd/mackerelstatsd.sysconfig /etc/sysconfig/mackerelstatsd
+   sudo cp example/systemd/mackerel-statsd.sysconfig /etc/sysconfig/mackerel-statsd
    ```
 
-2. Edit `/etc/sysconfig/mackerelstatsd` file and replace the Mackerel API key (`MACKEREL_APIKEY`) and host ID (`HOSTID`) with your own.
+2. Edit `/etc/sysconfig/mackerel-statsd` file and replace the Mackerel API key (`MACKEREL_APIKEY`) and host ID (`HOSTID`) with your own.
 
    ```
-   sudo vi /etc/sysconfig/mackerelstatsd
+   sudo vi /etc/sysconfig/mackerel-statsd
    ```
 
 3. Enable systemd service.
 
    ```
-   sudo systemctl enable mackerelstatsd
+   sudo systemctl enable mackerel-statsd
    ```
 
 ## License
