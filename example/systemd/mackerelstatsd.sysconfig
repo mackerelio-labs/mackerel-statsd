@@ -1,3 +1,3 @@
-# /etc/sysconfig/mackerelstatsd
+# /etc/sysconfig/mackerel-statsd
 MACKEREL_APIKEY=__YOUR_MACKEREL_APIKEY__
 HOSTID=__YOUR_HOSTID__
